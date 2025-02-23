@@ -120,7 +120,7 @@ def main():
     win_rates = [switch_win_rate, stay_win_rate]
     plt.bar(labels, win_rates, color=['blue', 'red'])
     plt.ylabel('Win Rate')
-    plt.title(f'Monty Hall Simulation Results ({num_doors} doors)')
+    plt.title(f'Monty Hall Simulation Results\n(Chatgpt o3 mini high)  ({num_doors} doors)')
     plt.ylim(0, 1)
     plt.show()
 

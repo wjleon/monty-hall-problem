@@ -3,6 +3,7 @@ Monty Hall Simulation Script
 
 Author: Wilmer Leon
 Contact: https://www.linkedin.com/in/wilmer-leon/
+Note: This file was 100% generated with Deepseek.
 
 Description:
 This script simulates the Monty Hall problem, a classic probability puzzle.
@@ -23,6 +24,7 @@ Dependencies:
 import random
 import matplotlib.pyplot as plt
 import argparse
+import os
 
 def monty_hall_simulation(num_trials, switch_doors, num_doors):
     """
@@ -59,30 +61,49 @@ def monty_hall_simulation(num_trials, switch_doors, num_doors):
 
     return wins / num_trials  # Calculate and return the win rate.
 
-def run_simulation(num_doors):
+def run_simulation(num_doors, save_path=None):
     """
     Runs the Monty Hall simulation for a specified number of doors and displays the results.
 
     Args:
         num_doors (int): The number of doors in the simulation.
+        save_path (str, optional): Path to save the graph image.
     """
-    num_trials = 10000  # Set the number of trials for the simulations
-    switch_win_rate = monty_hall_simulation(num_trials, True, num_doors)  # Simulate with switching doors
-    stay_win_rate = monty_hall_simulation(num_trials, False, num_doors)  # Simulate without switching doors
+    num_trials = 10000
+    switch_win_rate = monty_hall_simulation(num_trials, True, num_doors)
+    stay_win_rate = monty_hall_simulation(num_trials, False, num_doors)
 
-    # Print the results to the console
     print(f"Win rate when switching doors: {switch_win_rate:.4f}")
     print(f"Win rate when staying with the original choice: {stay_win_rate:.4f}")
 
-    # Visualize the results using a bar chart
-    labels = ['Switch Doors', 'Stay with Original Choice']  # Labels for the bars
-    win_rates = [switch_win_rate, stay_win_rate]  # Win rates for each strategy
+    labels = ['Switch Doors', 'Stay with Original Choice']
+    win_rates = [switch_win_rate, stay_win_rate]
 
-    plt.bar(labels, win_rates, color=['blue', 'red'])  # Create the bar chart
-    plt.ylabel('Win Rate')  # Set the y-axis label
-    plt.title(f'Monty Hall Simulation Results ({num_doors} Doors)')  # Set the chart title
-    plt.ylim(0, 1)  # Set the y-axis limits to 0-1 (for percentages)
-    plt.show()  # Display the chart
+    plt.figure()
+    plt.bar(labels, win_rates, color=['blue', 'red'])
+    plt.ylabel('Win Rate')
+    plt.title(f'Monty Hall Simulation Results\n(Deepseek) ({num_doors} doors)')
+    plt.ylim(0, 1)
+    
+    if save_path:
+        plt.savefig(save_path)
+    plt.show()
+    plt.close()
+
+def run_all_simulations():
+    """Runs all simulations and saves the graphs."""
+    images_dir = '/Users/wleon/Dropbox/_Back2Bits/TheMontyHallProblem/images'
+    os.makedirs(images_dir, exist_ok=True)
+    
+    configurations = [
+        (3, 'deepseek_3_doors.jpg'),
+        (10, 'deepseek_10_doors.jpg'),
+        (1000, 'deepseek_1000_doors.jpg')
+    ]
+    
+    for num_doors, filename in configurations:
+        save_path = os.path.join(images_dir, filename)
+        run_simulation(num_doors, save_path)
 
 def interactive_menu():
     """
@@ -93,8 +114,9 @@ def interactive_menu():
         print("1. Run the problem with 3 doors")
         print("2. Run the problem with 10 doors")
         print("3. Run the problem with 1000 doors")
-        print("4. Exit")
-        choice = input("Enter your choice (1-4): ")
+        print("4. Run all simulations")
+        print("5. Exit")
+        choice = input("Enter your choice (1-5): ")
 
         if choice == '1':
             run_simulation(3)
@@ -103,10 +125,12 @@ def interactive_menu():
         elif choice == '3':
             run_simulation(1000)
         elif choice == '4':
+            run_all_simulations()
+        elif choice == '5':
             print("Exiting the program.")
             break
         else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
+            print("Invalid choice. Please enter a number between 1 and 5.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Monty Hall Simulation Script")
